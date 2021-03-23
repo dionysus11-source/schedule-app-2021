@@ -73,18 +73,28 @@ class _MainPage extends State<MainPage> with SingleTickerProviderStateMixin {
       bottomNavigationBar: TabBar(
         tabs: <Tab>[
           Tab(
-            icon: Icon(Icons.looks_one, color: Colors.blue),
+            icon: Icon(Icons.calendar_today_outlined, color: Colors.black),
           ),
           Tab(
-            icon: Icon(Icons.looks_two, color: Colors.blue),
-          ),
+              icon: Image.asset(
+            'repo/images/feedback.png',
+            width: 24,
+            height: 24,
+          )),
           Tab(
-            icon: Icon(Icons.looks_3, color: Colors.blue),
-          ),
+              icon: Image.asset(
+            'repo/images/week.png',
+            width: 24,
+            height: 24,
+          )),
           Tab(
-            icon: Icon(Icons.looks_4, color: Colors.blue),
-          ),
+              icon: Image.asset(
+            'repo/images/calendar.png',
+            width: 24,
+            height: 24,
+          )),
         ],
+        controller: controller,
       ),
     );
   }
