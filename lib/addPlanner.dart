@@ -16,11 +16,17 @@ class AddPlanner extends StatefulWidget {
 class _AddPlanner extends State<AddPlanner> {
   TextEditingController contentController;
   var category = ['영적', '지적', '사회적', '신체적', '잠'];
+  int _year;
+  int _month;
+  int _day;
   int _selectedIndex = -1;
 
   @override
   void initState() {
     super.initState();
+    _year = DateTime.now().year;
+    _month = DateTime.now().month;
+    _day = DateTime.now().day;
   }
 
   Widget _buildChips() {
@@ -48,19 +54,16 @@ class _AddPlanner extends State<AddPlanner> {
           });
         },
       );
-      print(choiceChip);
       chips.add(Padding(
         padding: EdgeInsets.symmetric(horizontal: 10),
         child: choiceChip,
       ));
     }
-    print(chips[0]);
-    var test = ListView(
+    return ListView(
       scrollDirection: Axis.horizontal,
       children: chips,
       shrinkWrap: true,
     );
-    return test;
   }
 
   @override
@@ -74,9 +77,28 @@ class _AddPlanner extends State<AddPlanner> {
         child: Column(
           children: <Widget>[
             Text('카테고리 설정'),
+            SizedBox(
+              height: 20,
+            ),
             Container(
               height: 30,
               child: _buildChips(),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Text(_year.toString()),
+            Slider(
+              value: _year.toDouble(),
+              min: 2021,
+              max: 2025,
+              divisions: 5,
+              label: _year.toString(),
+              onChanged: (value) {
+                setState(() {
+                  _year = value.toInt();
+                });
+              },
             )
           ],
         ),

@@ -61,11 +61,13 @@ class MainPage extends StatefulWidget {
 
 class _MainPage extends State<MainPage> with SingleTickerProviderStateMixin {
   TabController controller;
+  DateTime _selectedDate;
 
   @override
   void initState() {
     super.initState();
     controller = TabController(length: 4, vsync: this);
+    _selectedDate = DateTime.now();
   }
 
   @override
@@ -79,10 +81,33 @@ class _MainPage extends State<MainPage> with SingleTickerProviderStateMixin {
     return Scaffold(
       appBar: AppBar(
         title: Text('Time Planner'),
+        actions: <Widget>[
+          FlatButton(
+            onPressed: () {
+              Future<DateTime> selected = showDatePicker(
+                  context: context,
+                  initialDate: _selectedDate,
+                  firstDate: DateTime(2015),
+                  lastDate: DateTime(2025),
+                  builder: (BuildContext context, Widget child) {
+                    return Theme(
+                      data: ThemeData.light(),
+                      child: child,
+                    );
+                  });
+              selected.then((dateTime) {
+                setState(() {
+                  _selectedDate = dateTime;
+                });
+              });
+            },
+            child: Text('날짜바꾸기'),
+          )
+        ],
       ),
       body: TabBarView(
         children: <Widget>[
-          DailyAddApp(),
+          DailyAddApp(widget.db, _selectedDate),
           DailyFeedbackApp(),
           WeeklyFeedbackApp(),
           MonthlyFeedbackApp()

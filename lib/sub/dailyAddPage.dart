@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
 
-class DailyAddApp extends StatelessWidget {
+class DailyAddApp extends StatefulWidget {
+  final Future<Database> db;
+  final DateTime _selectedDate;
+  DailyAddApp(this.db, this._selectedDate);
+  @override
+  _DailyAddAppState createState() => _DailyAddAppState();
+}
+
+class _DailyAddAppState extends State<DailyAddApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        child: Center(child: Text('첫번째 페이지')),
+        child: Center(child: Text(widget._selectedDate.toString())),
       ),
     );
   }
