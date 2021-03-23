@@ -3,6 +3,9 @@ import 'sub/dailyAddPage.dart';
 import 'sub/dailyFeedbackPage.dart';
 import 'sub/monthlyFeedbackPage.dart';
 import 'sub/weeklyFeedbackPage.dart';
+import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
+import 'addPlanner.dart';
 
 void main() {
   runApp(MyApp());
@@ -12,6 +15,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    Future<Database> database = initDatabase();
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -30,12 +34,27 @@ class MyApp extends StatelessWidget {
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MainPage(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => MainPage(database),
+        'add': (context) => AddPlanner(database)
+      },
     );
+  }
+
+  Future<Database> initDatabase() async {
+    return openDatabase(join(await getDatabasesPath(), 'planer_database.db'),
+        onCreate: (db, version) {
+      return db
+          .execute("CREATE TABLE todos(id INTEGER PRIMARY KEY AUTOINCREMENT, "
+              "title TEXT, category TEXT, date TEXT, time TEXT)");
+    }, version: 1);
   }
 }
 
 class MainPage extends StatefulWidget {
+  final Future<Database> db;
+  MainPage(this.db);
   @override
   State<StatefulWidget> createState() => _MainPage();
 }
