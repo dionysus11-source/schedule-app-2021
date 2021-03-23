@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => MainPage(database),
-        'add': (context) => AddPlanner(database)
+        '/add': (context) => AddPlanner(database)
       },
     );
   }
@@ -115,6 +115,13 @@ class _MainPage extends State<MainPage> with SingleTickerProviderStateMixin {
         ],
         controller: controller,
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          final todo = await Navigator.of(context).pushNamed('/add');
+        },
+        child: Icon(Icons.add),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
