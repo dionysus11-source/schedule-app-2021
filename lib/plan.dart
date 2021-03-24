@@ -1,10 +1,10 @@
 class Plan {
   String title;
   String date;
-  String time;
+  int time;
   String category;
   int id;
-  Plan({this.title, this.date, this.time, this.id, this.category});
+  Plan({this.title, this.date, this.time, this.category});
 
   Map<String, dynamic> toMap() {
     return {
