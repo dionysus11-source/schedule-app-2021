@@ -153,6 +153,9 @@ class _MainPage extends State<MainPage> with SingleTickerProviderStateMixin {
   }
 
   void insertPlan(List plan) async {
+    if (plan == null) {
+      return;
+    }
     for (int i = 0; i < plan.length; ++i) {
       if (plan[i].title == null) {
         return;

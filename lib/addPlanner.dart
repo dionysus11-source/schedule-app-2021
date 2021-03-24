@@ -108,7 +108,7 @@ class _AddPlanner extends State<AddPlanner> {
               value: _month.toDouble(),
               min: 1,
               max: 12,
-              divisions: 5,
+              divisions: 12,
               label: _month.toString(),
               onChanged: (value) {
                 setState(() {
@@ -121,7 +121,7 @@ class _AddPlanner extends State<AddPlanner> {
               value: _day.toDouble(),
               min: 1,
               max: 31,
-              divisions: 5,
+              divisions: 31,
               label: _day.toString(),
               onChanged: (value) {
                 setState(() {
@@ -134,7 +134,7 @@ class _AddPlanner extends State<AddPlanner> {
               value: _startTime.toDouble(),
               min: 0,
               max: 23,
-              divisions: 5,
+              divisions: 24,
               label: _startTime.toString(),
               onChanged: (value) {
                 setState(() {
@@ -147,7 +147,7 @@ class _AddPlanner extends State<AddPlanner> {
               value: _endTime.toDouble(),
               min: 0,
               max: 23,
-              divisions: 5,
+              divisions: 24,
               label: _endTime.toString(),
               onChanged: (value) {
                 setState(() {
