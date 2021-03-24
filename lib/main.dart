@@ -6,6 +6,7 @@ import 'sub/weeklyFeedbackPage.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'addPlanner.dart';
+import 'plan.dart';
 
 void main() {
   runApp(MyApp());
@@ -143,10 +144,22 @@ class _MainPage extends State<MainPage> with SingleTickerProviderStateMixin {
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           final todo = await Navigator.of(context).pushNamed('/add');
+          insertPlan(todo);
         },
         child: Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
+  }
+
+  void insertPlan(List plan) async {
+    for (int i = 0; i < plan.length; ++i) {
+      if (plan[i].title == null) {
+        return;
+      }
+      final Database database = await widget.db;
+      await database.insert('todos', plan[i].toMap(),
+          conflictAlgorithm: ConflictAlgorithm.replace);
+    }
   }
 }
