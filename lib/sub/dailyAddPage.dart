@@ -12,11 +12,20 @@ class DailyAddApp extends StatefulWidget {
 
 class _DailyAddAppState extends State<DailyAddApp> {
   Future<List<Plan>> planList;
+  Map<String, Color> categoryColor;
 
   @override
   void initState() {
     super.initState();
     planList = getPlans();
+    categoryColor = {
+      '영적': Colors.purple,
+      '지적': Colors.pink,
+      '사회적': Colors.brown,
+      '신체적': Colors.yellow,
+      '잠': Colors.blue,
+      '버림': Colors.orange
+    };
   }
 
   @override
@@ -39,17 +48,45 @@ class _DailyAddAppState extends State<DailyAddApp> {
                       Plan plan = snapshot.data[index];
                       return ListTile(
                         title: Text(
-                          plan.category,
+                          plan.time.toString(),
                           style: TextStyle(fontSize: 20),
                         ),
                         subtitle: Container(
                           child: Row(
                             children: <Widget>[
+                              Text(plan.category),
                               Text(plan.title),
-                              Text(plan.time.toString())
                             ],
                           ),
                         ),
+                        tileColor: categoryColor[plan.category],
+                        onLongPress: () async {
+                          Plan result = await showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text('${plan.time} : ${plan.title}'),
+                                  content: Text('삭제 하시겠습니까?'),
+                                  actions: <Widget>[
+                                    FlatButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop(plan);
+                                      },
+                                      child: Text('예'),
+                                    ),
+                                    FlatButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text('아니오'),
+                                    )
+                                  ],
+                                );
+                              });
+                          if (result != null) {
+                            _deletePlan(result);
+                          }
+                        },
                       );
                     },
                     itemCount: snapshot.data.length,
@@ -75,7 +112,16 @@ class _DailyAddAppState extends State<DailyAddApp> {
         date: maps[i]['date'],
         time: maps[i]['time'],
         category: maps[i]['category'],
+        id: maps[i]['id'],
       );
+    });
+  }
+
+  void _deletePlan(Plan plan) async {
+    final Database database = await widget.db;
+    await database.delete('todos', where: 'id=?', whereArgs: [plan.id]);
+    setState(() {
+      planList = getPlans();
     });
   }
 }

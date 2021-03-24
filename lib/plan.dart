@@ -4,7 +4,7 @@ class Plan {
   int time;
   String category;
   int id;
-  Plan({this.title, this.date, this.time, this.category});
+  Plan({this.title, this.date, this.time, this.category, this.id});
 
   Map<String, dynamic> toMap() {
     return {
