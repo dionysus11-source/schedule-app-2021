@@ -110,14 +110,28 @@ class _DailyAddAppState extends State<DailyAddApp> {
 
   Future<List<Plan>> getPlans() async {
     final Database database = await widget.db;
-    final List<Map<String, dynamic>> maps = await database.query('todos');
-    return List.generate(maps.length, (i) {
+    List<Map<String, dynamic>> maps = await database.query('todos');
+    List<Map<String, dynamic>> ret = new List();
+    String date = widget._selectedDate.year.toString() +
+        (widget._selectedDate.month < 10
+            ? '0' + widget._selectedDate.month.toString()
+            : widget._selectedDate.month.toString()) +
+        (widget._selectedDate.day < 10
+            ? '0' + widget._selectedDate.day.toString()
+            : widget._selectedDate.day.toString());
+    for (int i = 0; i < 24; ++i) {
+      ret.add({'title': '없음', 'date': date, 'time': i, 'category': '영적'});
+    }
+    for (int i = 0; i < maps.length; ++i) {
+      ret[maps[i]['time']] = maps[i];
+    }
+    return List.generate(ret.length, (i) {
       return Plan(
-        title: maps[i]['title'],
-        date: maps[i]['date'],
-        time: maps[i]['time'],
-        category: maps[i]['category'],
-        id: maps[i]['id'],
+        title: ret[i]['title'],
+        date: ret[i]['date'],
+        time: ret[i]['time'],
+        category: ret[i]['category'],
+        id: ret[i]['id'],
       );
     });
   }
@@ -140,6 +154,9 @@ class _DailyAddAppState extends State<DailyAddApp> {
         return;
       }
       final Database database = await widget.db;
+      await database.delete('todos',
+          where: 'date=? AND time=?',
+          whereArgs: [plans[i].date, plans[i].time]);
       await database.insert('todos', plans[i].toMap(),
           conflictAlgorithm: ConflictAlgorithm.replace);
     }
