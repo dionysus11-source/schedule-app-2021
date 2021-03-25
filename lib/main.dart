@@ -36,9 +36,18 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       initialRoute: '/',
-      routes: {
-        '/': (context) => MainPage(database),
-        '/add': (context) => AddPlanner(database)
+      //routes: {
+      //  '/': (context) => MainPage(database),
+      // '/add': (context) => AddPlanner(database)
+      //},
+      onGenerateRoute: (routeSettings) {
+        print('build rote for ${routeSettings.name}');
+        var routes = <String, WidgetBuilder>{
+          '/': (context) => MainPage(database),
+          '/add': (context) => AddPlanner(database, routeSettings.arguments)
+        };
+        WidgetBuilder builder = routes[routeSettings.name];
+        return MaterialPageRoute(builder: (context) => builder(context));
       },
     );
   }
@@ -143,7 +152,20 @@ class _MainPage extends State<MainPage> with SingleTickerProviderStateMixin {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          final todo = await Navigator.of(context).pushNamed('/add');
+          String date = DateTime.now().year.toString() +
+              (DateTime.now().month < 10
+                  ? '0' + DateTime.now().month.toString()
+                  : DateTime.now().month.toString()) +
+              (DateTime.now().day < 10
+                  ? '0' + DateTime.now().day.toString()
+                  : DateTime.now().day.toString());
+          Plan argm = Plan(
+              title: '공부',
+              date: date,
+              time: DateTime.now().hour,
+              category: '영적');
+          final todo =
+              await Navigator.of(context).pushNamed('/add', arguments: argm);
           insertPlan(todo);
         },
         child: Icon(Icons.add),

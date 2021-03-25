@@ -4,7 +4,8 @@ import 'plan.dart';
 
 class AddPlanner extends StatefulWidget {
   final Future<Database> db;
-  AddPlanner(this.db);
+  final Plan currentPlan;
+  AddPlanner(this.db, this.currentPlan);
 
   @override
   State<StatefulWidget> createState() {
@@ -27,11 +28,16 @@ class _AddPlanner extends State<AddPlanner> {
   void initState() {
     super.initState();
     contentController = new TextEditingController();
-    _year = DateTime.now().year;
+    /*_year = DateTime.now().year;
     _month = DateTime.now().month;
     _day = DateTime.now().day;
     _startTime = DateTime.now().hour;
-    _endTime = DateTime.now().hour + 1;
+    _endTime */
+    _year = int.parse(widget.currentPlan.date.substring(0, 4));
+    _month = int.parse(widget.currentPlan.date.substring(4, 6));
+    _day = int.parse(widget.currentPlan.date.substring(6, 8));
+    _startTime = widget.currentPlan.time;
+    _endTime = widget.currentPlan.time + 1;
   }
 
   Widget _buildChips() {
@@ -71,6 +77,13 @@ class _AddPlanner extends State<AddPlanner> {
 
   @override
   Widget build(BuildContext context) {
+    //final Plan args = ModalRoute.of(context).settings.arguments;
+    //_year = int.parse(args.date.substring(0, 4));
+    //_month = int.parse(args.date.substring(4, 6));
+    //_day = int.parse(args.date.substring(6, 8));
+    //_startTime = args.time;
+    //_endTime = args.time + 1;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Plan 추가'),
@@ -172,8 +185,11 @@ class _AddPlanner extends State<AddPlanner> {
                   Plan plan = Plan(
                     category: category[_selectedIndex],
                     title: contentController.value.text,
-                    date:
-                        _year.toString() + _month.toString() + _day.toString(),
+                    date: _year.toString() +
+                        (_month < 10
+                            ? '0' + _month.toString()
+                            : _month.toString()) +
+                        (_day < 10 ? '0' + _day.toString() : _day.toString()),
                     time: i,
                   );
                   ret.add(plan);

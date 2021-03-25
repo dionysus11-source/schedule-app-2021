@@ -87,6 +87,10 @@ class _DailyAddAppState extends State<DailyAddApp> {
                             _deletePlan(result);
                           }
                         },
+                        onTap: () async {
+                          final todo =
+                              await Navigator.of(context).pushNamed('/add');
+                        },
                       );
                     },
                     itemCount: snapshot.data.length,
