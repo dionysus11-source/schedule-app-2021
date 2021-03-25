@@ -22,6 +22,7 @@ class _AddPlanner extends State<AddPlanner> {
   int _day;
   int _startTime;
   int _endTime;
+  String _title;
   int _selectedIndex = 0;
 
   @override
@@ -38,6 +39,7 @@ class _AddPlanner extends State<AddPlanner> {
     _day = int.parse(widget.currentPlan.date.substring(6, 8));
     _startTime = widget.currentPlan.time;
     _endTime = widget.currentPlan.time + 1;
+    _title = widget.currentPlan.title;
   }
 
   Widget _buildChips() {
@@ -175,16 +177,19 @@ class _AddPlanner extends State<AddPlanner> {
               padding: EdgeInsets.all(10),
               child: TextField(
                 controller: contentController,
-                decoration: InputDecoration(labelText: '내용'),
+                decoration: InputDecoration(labelText: _title),
               ),
             ),
             RaisedButton(
               onPressed: () {
                 List<Plan> ret = List();
+                if (contentController.value.text != '') {
+                  _title = contentController.value.text;
+                }
                 for (int i = _startTime; i < _endTime; ++i) {
                   Plan plan = Plan(
                     category: category[_selectedIndex],
-                    title: contentController.value.text,
+                    title: _title,
                     date: _year.toString() +
                         (_month < 10
                             ? '0' + _month.toString()

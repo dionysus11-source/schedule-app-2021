@@ -88,8 +88,9 @@ class _DailyAddAppState extends State<DailyAddApp> {
                           }
                         },
                         onTap: () async {
-                          final todo =
-                              await Navigator.of(context).pushNamed('/add');
+                          final todo = await Navigator.of(context)
+                              .pushNamed('/add', arguments: plan);
+                          _updatePlan(todo, plan);
                         },
                       );
                     },
@@ -124,6 +125,25 @@ class _DailyAddAppState extends State<DailyAddApp> {
   void _deletePlan(Plan plan) async {
     final Database database = await widget.db;
     await database.delete('todos', where: 'id=?', whereArgs: [plan.id]);
+    setState(() {
+      planList = getPlans();
+    });
+  }
+
+  void _updatePlan(List plans, Plan currentPlan) async {
+    final Database database = await widget.db;
+    if (plans == null) {
+      return;
+    }
+    for (int i = 0; i < plans.length; ++i) {
+      if (plans[i].title == null) {
+        return;
+      }
+      final Database database = await widget.db;
+      await database.insert('todos', plans[i].toMap(),
+          conflictAlgorithm: ConflictAlgorithm.replace);
+    }
+    await database.delete('todos', where: 'id=?', whereArgs: [currentPlan.id]);
     setState(() {
       planList = getPlans();
     });
