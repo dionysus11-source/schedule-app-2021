@@ -47,18 +47,42 @@ class _DailyAddAppState extends State<DailyAddApp> {
                     itemBuilder: (context, index) {
                       Plan plan = snapshot.data[index];
                       return ListTile(
-                        title: Text(
+                        title: Container(
+                          child: Row(
+                            children: <Widget>[
+                              SizedBox(
+                                width: 18,
+                                child: Text(plan.time.toString()),
+                              ),
+                              SizedBox(
+                                width: 15,
+                              ),
+                              SizedBox(
+                                width: 50,
+                                child: Text(plan.category),
+                              ),
+                              SizedBox(
+                                width: 20,
+                              ),
+                              SizedBox(
+                                width: 100,
+                                child: Text(plan.title),
+                              ),
+                            ],
+                          ),
+                        ),
+                        /*Text(
                           plan.time.toString(),
                           style: TextStyle(fontSize: 20),
-                        ),
-                        subtitle: Container(
+                        ),*/
+                        /*subtitle: Container(
                           child: Row(
                             children: <Widget>[
                               Text(plan.category),
                               Text(plan.title),
                             ],
                           ),
-                        ),
+                        ),*/
                         tileColor: categoryColor[plan.category],
                         onLongPress: () async {
                           Plan result = await showDialog(
