@@ -129,6 +129,21 @@ class _DailyAddAppState extends State<DailyAddApp> {
           future: planList,
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          String date = Plan.makeDate(
+              DateTime.now().year, DateTime.now().month, DateTime.now().day);
+          Plan argm = Plan(
+              title: '공부',
+              date: date,
+              time: DateTime.now().hour,
+              category: '영적');
+          final todo =
+              await Navigator.of(context).pushNamed('/add', arguments: argm);
+          insertPlan(todo);
+        },
+        child: Icon(Icons.add),
+      ),
     );
   }
 
@@ -183,6 +198,25 @@ class _DailyAddAppState extends State<DailyAddApp> {
           conflictAlgorithm: ConflictAlgorithm.replace);
     }
     await database.delete('todos', where: 'id=?', whereArgs: [currentPlan.id]);
+    setState(() {
+      planList = getPlans();
+    });
+  }
+
+  void insertPlan(List plan) async {
+    if (plan == null) {
+      return;
+    }
+    for (int i = 0; i < plan.length; ++i) {
+      if (plan[i].title == null) {
+        return;
+      }
+      final Database database = await widget.db;
+      await database.delete('todos',
+          where: 'date=? AND time=?', whereArgs: [plan[i].date, plan[i].time]);
+      await database.insert('todos', plan[i].toMap(),
+          conflictAlgorithm: ConflictAlgorithm.replace);
+    }
     setState(() {
       planList = getPlans();
     });

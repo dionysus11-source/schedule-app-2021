@@ -41,7 +41,6 @@ class MyApp extends StatelessWidget {
       // '/add': (context) => AddPlanner(database)
       //},
       onGenerateRoute: (routeSettings) {
-        print('build rote for ${routeSettings.name}');
         var routes = <String, WidgetBuilder>{
           '/': (context) => MainPage(database),
           '/add': (context) => AddPlanner(database, routeSettings.arguments)
@@ -150,22 +149,6 @@ class _MainPage extends State<MainPage> with SingleTickerProviderStateMixin {
         ],
         controller: controller,
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          String date = Plan.makeDate(
-              DateTime.now().year, DateTime.now().month, DateTime.now().day);
-          Plan argm = Plan(
-              title: '공부',
-              date: date,
-              time: DateTime.now().hour,
-              category: '영적');
-          final todo =
-              await Navigator.of(context).pushNamed('/add', arguments: argm);
-          insertPlan(todo);
-        },
-        child: Icon(Icons.add),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 
