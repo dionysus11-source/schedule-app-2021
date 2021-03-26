@@ -152,13 +152,8 @@ class _MainPage extends State<MainPage> with SingleTickerProviderStateMixin {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          String date = DateTime.now().year.toString() +
-              (DateTime.now().month < 10
-                  ? '0' + DateTime.now().month.toString()
-                  : DateTime.now().month.toString()) +
-              (DateTime.now().day < 10
-                  ? '0' + DateTime.now().day.toString()
-                  : DateTime.now().day.toString());
+          String date = Plan.makeDate(
+              DateTime.now().year, DateTime.now().month, DateTime.now().day);
           Plan argm = Plan(
               title: '공부',
               date: date,

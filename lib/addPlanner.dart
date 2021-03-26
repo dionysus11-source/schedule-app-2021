@@ -29,11 +29,6 @@ class _AddPlanner extends State<AddPlanner> {
   void initState() {
     super.initState();
     contentController = new TextEditingController();
-    /*_year = DateTime.now().year;
-    _month = DateTime.now().month;
-    _day = DateTime.now().day;
-    _startTime = DateTime.now().hour;
-    _endTime */
     _year = int.parse(widget.currentPlan.date.substring(0, 4));
     _month = int.parse(widget.currentPlan.date.substring(4, 6));
     _day = int.parse(widget.currentPlan.date.substring(6, 8));
@@ -79,13 +74,6 @@ class _AddPlanner extends State<AddPlanner> {
 
   @override
   Widget build(BuildContext context) {
-    //final Plan args = ModalRoute.of(context).settings.arguments;
-    //_year = int.parse(args.date.substring(0, 4));
-    //_month = int.parse(args.date.substring(4, 6));
-    //_day = int.parse(args.date.substring(6, 8));
-    //_startTime = args.time;
-    //_endTime = args.time + 1;
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Plan 추가'),

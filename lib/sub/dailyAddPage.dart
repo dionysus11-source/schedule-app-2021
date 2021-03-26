@@ -134,15 +134,13 @@ class _DailyAddAppState extends State<DailyAddApp> {
 
   Future<List<Plan>> getPlans() async {
     final Database database = await widget.db;
-    List<Map<String, dynamic>> maps = await database.query('todos');
+    String date = Plan.makeDate(widget._selectedDate.year,
+        widget._selectedDate.month, widget._selectedDate.day);
+
+    List<Map<String, dynamic>> maps = await database.rawQuery(
+        'select title, date, time,category, id from todos where date=${date}');
     List<Map<String, dynamic>> ret = new List();
-    String date = widget._selectedDate.year.toString() +
-        (widget._selectedDate.month < 10
-            ? '0' + widget._selectedDate.month.toString()
-            : widget._selectedDate.month.toString()) +
-        (widget._selectedDate.day < 10
-            ? '0' + widget._selectedDate.day.toString()
-            : widget._selectedDate.day.toString());
+
     for (int i = 0; i < 24; ++i) {
       ret.add({'title': '없음', 'date': date, 'time': i, 'category': '영적'});
     }
