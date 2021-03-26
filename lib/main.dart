@@ -151,20 +151,4 @@ class _MainPage extends State<MainPage> with SingleTickerProviderStateMixin {
       ),
     );
   }
-
-  void insertPlan(List plan) async {
-    if (plan == null) {
-      return;
-    }
-    for (int i = 0; i < plan.length; ++i) {
-      if (plan[i].title == null) {
-        return;
-      }
-      final Database database = await widget.db;
-      await database.delete('todos',
-          where: 'date=? AND time=?', whereArgs: [plan[i].date, plan[i].time]);
-      await database.insert('todos', plan[i].toMap(),
-          conflictAlgorithm: ConflictAlgorithm.replace);
-    }
-  }
 }

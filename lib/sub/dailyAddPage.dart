@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import '../plan.dart';
+import '../timeChart.dart';
 
 class DailyAddApp extends StatefulWidget {
   final Future<Database> db;
@@ -71,18 +72,6 @@ class _DailyAddAppState extends State<DailyAddApp> {
                             ],
                           ),
                         ),
-                        /*Text(
-                          plan.time.toString(),
-                          style: TextStyle(fontSize: 20),
-                        ),*/
-                        /*subtitle: Container(
-                          child: Row(
-                            children: <Widget>[
-                              Text(plan.category),
-                              Text(plan.title),
-                            ],
-                          ),
-                        ),*/
                         tileColor: categoryColor[plan.category],
                         onLongPress: () async {
                           Plan result = await showDialog(
@@ -151,7 +140,6 @@ class _DailyAddAppState extends State<DailyAddApp> {
     final Database database = await widget.db;
     String date = Plan.makeDate(widget._selectedDate.year,
         widget._selectedDate.month, widget._selectedDate.day);
-
     List<Map<String, dynamic>> maps = await database.rawQuery(
         'select title, date, time,category, id from todos where date=${date}');
     List<Map<String, dynamic>> ret = new List();
