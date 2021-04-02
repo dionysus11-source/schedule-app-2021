@@ -19,8 +19,8 @@ class PlanDbHelper implements DatabaseStrategy {
     return openDatabase(join(await getDatabasesPath(), 'planer_database.db'),
         onCreate: (db, version) {
       return db.execute(
-          "CREATE TABLE $tableName(id INTEGER PRIMARY KEY AUTOINCREMENT, "
-          "title TEXT, category TEXT, date TEXT, time INTEGER)");
+          "CREATE TABLE daily(id INTEGER PRIMARY KEY AUTOINCREMENT, "
+          "title TEXT, category TEXT, date TEXT, time INTEGER, week INTEGER, weeday INTEGER)");
     }, version: 1);
   }
 

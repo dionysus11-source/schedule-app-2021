@@ -117,7 +117,7 @@ class _MainPage extends State<MainPage> with SingleTickerProviderStateMixin {
       body: TabBarView(
         children: <Widget>[
           DailyAddApp(widget.db, _selectedDate),
-          DailyFeedbackApp(),
+          DailyFeedbackApp(widget.db, _selectedDate),
           WeeklyFeedbackApp(),
           MonthlyFeedbackApp()
         ],
