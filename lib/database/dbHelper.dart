@@ -27,4 +27,8 @@ class DbHelper {
   void insertData(List plans) async {
     databaseStrategy.insertData(plans);
   }
+
+  void updateOneData(var plan) async {
+    databaseStrategy.updateOneData(plan);
+  }
 }

@@ -29,9 +29,6 @@ class _DailyFeedbackAppState extends State<DailyFeedbackApp> {
     this.dbHelper = new DbHelper();
     dbHelper.setDatabaseStrategy(new DailyFeedbackStrategy());
     feedbackList = dbHelper.getData(widget._selectedDate);
-    reviewContentController = new TextEditingController();
-    todoContentController = new TextEditingController();
-    diaryContentController = new TextEditingController();
   }
 
   @override
@@ -53,7 +50,41 @@ class _DailyFeedbackAppState extends State<DailyFeedbackApp> {
                   itemBuilder: (context, index) {
                     DailyFeedback dailyFeedback = snapshot.data[index];
                     return ListTile(
-                        title: Container(child: Text(dailyFeedback.diary)));
+                      title: Container(child: Text(dailyFeedback.diary)),
+                      onTap: () async {
+                        reviewContentController = new TextEditingController();
+                        todoContentController = new TextEditingController();
+                        diaryContentController = new TextEditingController();
+                        DailyFeedback result = await showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('수정하기'),
+                                content: Column(
+                                  children: <Widget>[
+                                    TextField(
+                                      controller: reviewContentController,
+                                      keyboardType: TextInputType.text,
+                                    )
+                                  ],
+                                ),
+                                actions: <Widget>[
+                                  FlatButton(
+                                    onPressed: () {
+                                      dailyFeedback.review =
+                                          reviewContentController.value.text;
+                                      Navigator.of(context).pop(dailyFeedback);
+                                    },
+                                    child: Text('예'),
+                                  )
+                                ],
+                              );
+                            });
+                        if (result != null) {
+                          dbHelper.updateOneData(result);
+                        }
+                      },
+                    );
                   },
                   itemCount: snapshot.data.length,
                 );

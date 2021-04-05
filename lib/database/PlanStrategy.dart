@@ -65,6 +65,8 @@ class PlanDbHelper implements DatabaseStrategy {
     await _database.delete('todos', where: 'id=?', whereArgs: [currentPlan.id]);
   }
 
+  void updateOneData(var plan) async {}
+
   void insertData(List plans) async {
     if (plans == null) return;
 

@@ -1,3 +1,4 @@
+import 'package:schedule_app_2021/database/dbHelper.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import '../dailyFeedback.dart';
@@ -27,24 +28,40 @@ class DailyFeedbackStrategy implements DatabaseStrategy {
   }
 
   Future<List<DailyFeedback>> getData(var time) async {
-    int weekday = Goal.getweekNumber(time);
+    String date = Plan.makeDate(time.year, time.month, time.day);
+    int week = Goal.getweekNumber(time);
     int selectedYear = time.year;
-    List<Map<String, dynamic>> maps = await _database.rawQuery(
-        'select review, date, todo, diary, week, weekday, id from $tableName where weekday=${weekday}');
+    final db = await this.database;
+    List<Map<String, dynamic>> maps = await db.rawQuery(
+        'select review, date, todo, diary, week, weekday, id from $tableName where week=${week}');
     maps.removeWhere((element) {
       int year = int.parse(element['date'].substring(0, 4));
       return selectedYear != year;
     });
-
-    return List.generate(maps.length, (i) {
+    List<Map<String, dynamic>> ret = new List();
+    for (int i = 0; i < 7; ++i) {
+      ret.add({
+        'review': '없음',
+        'date': date,
+        'todo': '없음',
+        'diary': '없음',
+        'week': week,
+        'weekday': i,
+      });
+    }
+    for (int i = 0; i < maps.length; ++i) {
+      ret[maps[i]['weeday']] = maps[i];
+    }
+    return List.generate(ret.length, (i) {
       return DailyFeedback(
-          id: maps[i]['id'],
-          review: maps[i]['review'],
-          date: maps[i]['date'],
-          todo: maps[i]['todo'],
-          diary: maps[i]['diary'],
-          week: maps[i]['week'],
-          weekday: maps[i]['weekday']);
+        review: ret[i]['review'],
+        date: ret[i]['date'],
+        todo: ret[i]['todo'],
+        diary: ret[i]['diary'],
+        week: ret[i]['week'],
+        weekday: ret[i]['weekday'],
+        id: ret[i]['id'],
+      );
     });
   }
 
@@ -62,6 +79,12 @@ class DailyFeedbackStrategy implements DatabaseStrategy {
       await _database.update(tableName, plans[i].toMap(),
           where: 'date=?', whereArgs: [plans[i].date]);
     }
+  }
+
+  void updateOneData(var input) async {
+    if (input == null) return;
+    await _database.update(tableName, input.toMap(),
+        where: 'date=?', whereArgs: [input.date]);
   }
 
   void insertData(List plans) async {

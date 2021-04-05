@@ -21,6 +21,7 @@ abstract class DatabaseStrategy {
   void deleteData(var plan) async {}
 
   void updateData(List plans, var currentPlan) async {}
+  void updateOneData(var currentPlan) async {}
 
   void insertData(List plans) async {}
 }
