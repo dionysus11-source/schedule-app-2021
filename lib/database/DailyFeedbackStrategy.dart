@@ -28,6 +28,7 @@ class DailyFeedbackStrategy implements DatabaseStrategy {
   }
 
   Future<List<DailyFeedback>> getData(var time) async {
+    DateTime dt = time.subtract(Duration(days: 7));
     String date = Plan.makeDate(time.year, time.month, time.day);
     int week = Goal.getweekNumber(time);
     int selectedYear = time.year;
@@ -50,7 +51,9 @@ class DailyFeedbackStrategy implements DatabaseStrategy {
       });
     }
     for (int i = 0; i < maps.length; ++i) {
-      ret[maps[i]['weeday']] = maps[i];
+      ret[maps[i]['weekday']]['review'] = maps[i]['review'];
+      ret[maps[i]['weekday']]['todo'] = maps[i]['todo'];
+      ret[maps[i]['weekday']]['diary'] = maps[i]['diary'];
     }
     return List.generate(ret.length, (i) {
       return DailyFeedback(
@@ -83,8 +86,9 @@ class DailyFeedbackStrategy implements DatabaseStrategy {
 
   void updateOneData(var input) async {
     if (input == null) return;
-    await _database.update(tableName, input.toMap(),
-        where: 'date=?', whereArgs: [input.date]);
+    await _database.delete(tableName, where: 'date=?', whereArgs: [input.date]);
+    await _database.insert(tableName, input.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   void insertData(List plans) async {
