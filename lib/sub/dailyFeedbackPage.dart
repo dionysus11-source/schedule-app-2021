@@ -22,6 +22,15 @@ class _DailyFeedbackAppState extends State<DailyFeedbackApp> {
   TextEditingController reviewContentController;
   TextEditingController todoContentController;
   TextEditingController diaryContentController;
+  Map<int, String> weekString = {
+    1: 'MON',
+    2: 'TUE',
+    3: "WED",
+    4: 'THU',
+    5: 'FRI',
+    6: 'SAT',
+    7: 'SUN'
+  };
 
   @override
   void initState() {
@@ -50,7 +59,54 @@ class _DailyFeedbackAppState extends State<DailyFeedbackApp> {
                   itemBuilder: (context, index) {
                     DailyFeedback dailyFeedback = snapshot.data[index];
                     return ListTile(
-                      title: Container(child: Text(dailyFeedback.diary)),
+                      title: Text(weekString[dailyFeedback.weekday]),
+                      subtitle: Container(
+                          child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            '리뷰',
+                            style: TextStyle(color: Colors.blue),
+                          ),
+                          SizedBox(
+                            // height: 50,
+                            child: Text(
+                              dailyFeedback.review,
+                            ),
+                          ),
+                          Divider(
+                            color: Colors.black,
+                            thickness: 0.2,
+                          ),
+                          Text(
+                            '앞으로 할 일',
+                            style: TextStyle(color: Colors.blue),
+                          ),
+                          SizedBox(
+                            child: Text(
+                              dailyFeedback.todo,
+                            ),
+                          ),
+                          Divider(
+                            color: Colors.black,
+                            thickness: 0.2,
+                          ),
+                          Text(
+                            '일기',
+                            style: TextStyle(color: Colors.blue),
+                          ),
+                          SizedBox(
+                            child: Text(
+                              dailyFeedback.diary,
+                            ),
+                          ),
+                          Divider(
+                            color: Colors.black,
+                            thickness: 1.2,
+                          ),
+                        ],
+                      )),
+                      trailing: Text(dailyFeedback.date),
                       onTap: () async {
                         reviewContentController = new TextEditingController();
                         todoContentController = new TextEditingController();
@@ -62,26 +118,78 @@ class _DailyFeedbackAppState extends State<DailyFeedbackApp> {
                                 title: Text('수정하기'),
                                 content: Column(
                                   children: <Widget>[
+                                    Text(
+                                      '리뷰',
+                                      style: TextStyle(color: Colors.blue),
+                                    ),
+                                    SizedBox(
+                                      child: Text(dailyFeedback.review),
+                                    ),
                                     TextField(
                                       controller: reviewContentController,
                                       keyboardType: TextInputType.text,
-                                    )
+                                    ),
+                                    Text(
+                                      '앞으로 할 일',
+                                      style: TextStyle(color: Colors.blue),
+                                    ),
+                                    SizedBox(
+                                      child: Text(dailyFeedback.todo),
+                                    ),
+                                    TextField(
+                                      controller: todoContentController,
+                                      keyboardType: TextInputType.text,
+                                    ),
+                                    Text(
+                                      '일기',
+                                      style: TextStyle(color: Colors.blue),
+                                    ),
+                                    SizedBox(
+                                      child: Text(dailyFeedback.diary),
+                                    ),
+                                    TextField(
+                                      controller: diaryContentController,
+                                      keyboardType: TextInputType.text,
+                                    ),
                                   ],
                                 ),
                                 actions: <Widget>[
                                   FlatButton(
                                     onPressed: () {
-                                      dailyFeedback.review =
-                                          reviewContentController.value.text;
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text('Cancle'),
+                                  ),
+                                  FlatButton(
+                                    onPressed: () {
+                                      if (reviewContentController.value.text !=
+                                          '') {
+                                        dailyFeedback.review =
+                                            reviewContentController.value.text;
+                                      }
+                                      if (todoContentController.value.text !=
+                                          '') {
+                                        dailyFeedback.todo =
+                                            todoContentController.value.text;
+                                      }
+                                      if (diaryContentController.value.text !=
+                                          '') {
+                                        dailyFeedback.diary =
+                                            diaryContentController.value.text;
+                                      }
                                       Navigator.of(context).pop(dailyFeedback);
                                     },
-                                    child: Text('예'),
-                                  )
+                                    child: Text('Save'),
+                                  ),
                                 ],
                               );
                             });
                         if (result != null) {
                           dbHelper.updateOneData(result);
+                          setState(() {
+                            feedbackList =
+                                dbHelper.getData(widget._selectedDate);
+                          });
                         }
                       },
                     );

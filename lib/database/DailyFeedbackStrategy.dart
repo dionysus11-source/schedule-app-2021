@@ -28,8 +28,8 @@ class DailyFeedbackStrategy implements DatabaseStrategy {
   }
 
   Future<List<DailyFeedback>> getData(var time) async {
-    DateTime dt = time.subtract(Duration(days: 7));
-    String date = Plan.makeDate(time.year, time.month, time.day);
+    int weekday = time.weekday - 1;
+    DateTime mondayDate = time.subtract(Duration(days: weekday));
     int week = Goal.getweekNumber(time);
     int selectedYear = time.year;
     final db = await this.database;
@@ -41,19 +41,20 @@ class DailyFeedbackStrategy implements DatabaseStrategy {
     });
     List<Map<String, dynamic>> ret = new List();
     for (int i = 0; i < 7; ++i) {
+      DateTime today = mondayDate.add(Duration(days: i));
       ret.add({
         'review': '없음',
-        'date': date,
+        'date': Plan.makeDate(today.year, today.month, today.day),
         'todo': '없음',
         'diary': '없음',
         'week': week,
-        'weekday': i,
+        'weekday': i + 1,
       });
     }
     for (int i = 0; i < maps.length; ++i) {
-      ret[maps[i]['weekday']]['review'] = maps[i]['review'];
-      ret[maps[i]['weekday']]['todo'] = maps[i]['todo'];
-      ret[maps[i]['weekday']]['diary'] = maps[i]['diary'];
+      ret[maps[i]['weekday'] - 1]['review'] = maps[i]['review'];
+      ret[maps[i]['weekday'] - 1]['todo'] = maps[i]['todo'];
+      ret[maps[i]['weekday'] - 1]['diary'] = maps[i]['diary'];
     }
     return List.generate(ret.length, (i) {
       return DailyFeedback(
