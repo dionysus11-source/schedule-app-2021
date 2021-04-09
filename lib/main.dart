@@ -54,8 +54,6 @@ class MyApp extends StatelessWidget {
   Future<Database> initDatabase() async {
     return openDatabase(join(await getDatabasesPath(), 'planer_database.db'),
         onCreate: (db, version) {
-      db.execute("CREATE TABLE daily(id INTEGER PRIMARY KEY AUTOINCREMENT, "
-          "review TEXT, todo TEXT, date TEXT, diary TEXT, week INTEGER, weekday INTEGER)");
       return db
           .execute("CREATE TABLE todos(id INTEGER PRIMARY KEY AUTOINCREMENT, "
               "title TEXT, category TEXT, date TEXT, time INTEGER)");
@@ -120,7 +118,7 @@ class _MainPage extends State<MainPage> with SingleTickerProviderStateMixin {
         children: <Widget>[
           DailyAddApp(widget.db, _selectedDate),
           DailyFeedbackApp(widget.db, _selectedDate),
-          WeeklyFeedbackApp(),
+          WeeklyFeedbackApp(_selectedDate),
           MonthlyFeedbackApp()
         ],
         controller: controller,

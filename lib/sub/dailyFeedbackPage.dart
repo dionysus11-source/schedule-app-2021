@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import '../dailyFeedback.dart';
 import '../database/DailyFeedbackStrategy.dart';
-import '../plan.dart';
-import '../Goal.dart';
 import '../database/dbHelper.dart';
-import '../database/databasestrategy.dart';
 
 class DailyFeedbackApp extends StatefulWidget {
   final Future<Database> db;

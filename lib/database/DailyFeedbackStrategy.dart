@@ -1,4 +1,3 @@
-import 'package:schedule_app_2021/database/dbHelper.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import '../dailyFeedback.dart';
@@ -19,7 +18,7 @@ class DailyFeedbackStrategy implements DatabaseStrategy {
   }
 
   Future<Database> initDatabase() async {
-    return openDatabase(join(await getDatabasesPath(), 'planer_database.db'),
+    return openDatabase(join(await getDatabasesPath(), 'dailyFeedback.db'),
         onCreate: (db, version) {
       return db.execute(
           "CREATE TABLE $tableName(id INTEGER PRIMARY KEY AUTOINCREMENT, "
