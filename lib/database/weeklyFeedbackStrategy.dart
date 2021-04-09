@@ -31,17 +31,20 @@ class WeeklyFeedbackStrategy implements DatabaseStrategy {
     final db = await this.database;
     List<Map<String, dynamic>> maps = await db.rawQuery(
         'select goal , result , reason, todo , week, year, id from $tableName where week=$week and year=$year');
-    return List.generate(maps.length, (i) {
-      return WeeklyFeedback(
-        goal: maps[i]['review'],
-        result: maps[i]['date'],
-        reason: maps[i]['todo'],
-        todo: maps[i]['diary'],
-        week: maps[i]['week'],
-        year: maps[i]['weekday'],
-        id: maps[i]['id'],
-      );
-    });
+    if (maps.length > 0) {
+      return List.generate(maps.length, (i) {
+        return WeeklyFeedback(
+          goal: maps[i]['review'],
+          result: maps[i]['date'],
+          reason: maps[i]['todo'],
+          todo: maps[i]['diary'],
+          week: maps[i]['week'],
+          year: maps[i]['weekday'],
+          id: maps[i]['id'],
+        );
+      });
+    } else
+      return null;
   }
 
   void deleteData(var plan) async {
@@ -60,11 +63,11 @@ class WeeklyFeedbackStrategy implements DatabaseStrategy {
     }
   }
 
-  void updateOneData(var time) async {
-    if (time == null) return;
+  void updateOneData(var plan) async {
+    if (plan == null) return;
     await _database.delete(tableName,
-        where: 'week=? AND year=?', whereArgs: [time.week, time.year]);
-    await _database.insert(tableName, time.toMap(),
+        where: 'week=? AND year=?', whereArgs: [plan.week, plan.year]);
+    await _database.insert(tableName, plan.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
