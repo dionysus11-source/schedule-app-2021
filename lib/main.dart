@@ -108,7 +108,7 @@ class _MainPage extends State<MainPage> with SingleTickerProviderStateMixin {
                   });
               selected.then((dateTime) {
                 setState(() {
-                  _selectedDate = dateTime;
+                  if (dateTime != null) _selectedDate = dateTime;
                 });
               });
             },
