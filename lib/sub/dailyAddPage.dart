@@ -20,12 +20,12 @@ class _DailyAddAppState extends State<DailyAddApp> {
     super.initState();
     planList = getPlans();
     categoryColor = {
-      '영적': Colors.purple,
-      '지적': Colors.pink,
-      '사회적': Colors.brown,
-      '신체적': Colors.yellow,
-      '잠': Colors.blue,
-      '버림': Colors.orange
+      '영적': Colors.purple.withOpacity(0.7),
+      '지적': Colors.pink.withOpacity(0.7),
+      '사회적': Colors.brown.withOpacity(0.7),
+      '신체적': Colors.yellow.withOpacity(0.7),
+      '잠': Colors.blue.withOpacity(0.7),
+      '버림': Colors.orange.withOpacity(0.7)
     };
   }
 

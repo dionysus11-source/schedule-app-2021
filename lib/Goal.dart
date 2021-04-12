@@ -29,7 +29,7 @@ class Goal {
       'sleep': sleep,
       'trash': trash,
       'id': id,
-      'type': type, // 주, 월
+      'type': type, // 목표, 시간
       'year': year,
       'cnt': cnt
     };
