@@ -34,12 +34,12 @@ class WeeklyFeedbackStrategy implements DatabaseStrategy {
     if (maps.length > 0) {
       return List.generate(maps.length, (i) {
         return WeeklyFeedback(
-          goal: maps[i]['review'],
-          result: maps[i]['date'],
-          reason: maps[i]['todo'],
-          todo: maps[i]['diary'],
+          goal: maps[i]['goal'],
+          result: maps[i]['result'],
+          reason: maps[i]['reason'],
+          todo: maps[i]['todo'],
           week: maps[i]['week'],
-          year: maps[i]['weekday'],
+          year: maps[i]['year'],
           id: maps[i]['id'],
         );
       });
