@@ -41,21 +41,27 @@ class _WeeklyFeedbackAppState extends State<WeeklyFeedbackApp> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               weeklyFeedback = snapshot.data[0];
-              return Column(
-                children: <Widget>[
-                  Card(
-                    child: Text(weeklyFeedback.goal),
-                  ),
-                  Card(
-                    child: Text(weeklyFeedback.result),
-                  ),
-                  Card(
-                    child: Text(weeklyFeedback.reason),
-                  ),
-                  Card(
-                    child: Text(weeklyFeedback.todo),
-                  ),
-                ],
+              List title = List();
+              title.add('목표');
+              title.add('결과');
+              title.add('원인 분석');
+              title.add('계속 해야할 것 버려야 할 것');
+              List content = List();
+              content.add(weeklyFeedback.goal);
+              content.add(weeklyFeedback.result);
+              content.add(weeklyFeedback.reason);
+              content.add(weeklyFeedback.todo);
+              return ListView.builder(
+                itemBuilder: (context, index) {
+                  return Card(
+                    elevation: 5,
+                    margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                    child: ListTile(
+                        title: Text(title[index]),
+                        subtitle: Text(content[index])),
+                  );
+                },
+                itemCount: title.length,
               );
             }
             return Text('No data');
