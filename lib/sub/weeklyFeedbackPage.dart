@@ -166,12 +166,13 @@ class _WeeklyFeedbackAppState extends State<WeeklyFeedbackApp> {
               result.year = widget._selectedDate.year;
             }
             dbHelper.updateOneData(result);
+            await Future.delayed(const Duration(seconds: 1));
             setState(() {
               weeklyfeedbackList = dbHelper.getData(widget._selectedDate);
             });
           }
         },
-        child: Icon(Icons.add),
+        child: Icon(Icons.edit),
       ),
     );
   }
