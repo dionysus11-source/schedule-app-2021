@@ -33,7 +33,7 @@ class TimeTrackerStrategy implements DatabaseStrategy {
     List<Map<String, dynamic>> maps = await db.rawQuery(
         'select type, goalTime, spentTime, reason, improvement, week, year, id from $tableName where week=$week and year=$year');
     if (maps.length > 0) {
-      return List.generate(maps.length, (i) {
+      List ret = List.generate(maps.length, (i) {
         return TimeTracker(
           type: maps[i]['type'],
           goalTime: maps[i]['goalTime'],
@@ -45,6 +45,8 @@ class TimeTrackerStrategy implements DatabaseStrategy {
           id: maps[i]['id'],
         );
       });
+      ret.sort((a, b) => a.type.compareTo(b.type));
+      return ret;
     } else
       return null;
   }

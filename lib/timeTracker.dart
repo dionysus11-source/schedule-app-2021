@@ -28,7 +28,6 @@ class TimeTracker {
       'type': type,
       'goalTime': goalTime,
       'spentTime': spentTime,
-      'percentage': percentage,
       'reason': reason,
       'improvement': improvement,
       'id': id,

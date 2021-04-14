@@ -118,21 +118,6 @@ class _DailyAddAppState extends State<DailyAddApp> {
           future: planList,
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          String date = Plan.makeDate(
-              DateTime.now().year, DateTime.now().month, DateTime.now().day);
-          Plan argm = Plan(
-              title: '공부',
-              date: date,
-              time: DateTime.now().hour,
-              category: '영적');
-          final todo =
-              await Navigator.of(context).pushNamed('/add', arguments: argm);
-          insertPlan(todo);
-        },
-        child: Icon(Icons.add),
-      ),
     );
   }
 
@@ -141,7 +126,7 @@ class _DailyAddAppState extends State<DailyAddApp> {
     String date = Plan.makeDate(widget._selectedDate.year,
         widget._selectedDate.month, widget._selectedDate.day);
     List<Map<String, dynamic>> maps = await database.rawQuery(
-        'select title, date, time,category, id from todos where date=${date}');
+        'select title, date, time,category, id from todos where date=$date');
     List<Map<String, dynamic>> ret = new List();
 
     for (int i = 0; i < 24; ++i) {
