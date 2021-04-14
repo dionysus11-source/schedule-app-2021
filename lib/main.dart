@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'sub/dailyAddPage.dart';
 import 'sub/dailyFeedbackPage.dart';
-import 'sub/monthlyFeedbackPage.dart';
+import 'sub/timeTrackerPage.dart';
 import 'sub/weeklyFeedbackPage.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -119,7 +119,7 @@ class _MainPage extends State<MainPage> with SingleTickerProviderStateMixin {
           DailyAddApp(widget.db, _selectedDate),
           DailyFeedbackApp(widget.db, _selectedDate),
           WeeklyFeedbackApp(_selectedDate),
-          MonthlyFeedbackApp()
+          TimeTrackerApp(_selectedDate)
         ],
         controller: controller,
       ),
