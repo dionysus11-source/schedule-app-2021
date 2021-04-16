@@ -7,6 +7,7 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'addPlanner.dart';
 import 'plan.dart';
+import 'package:intl/intl.dart';
 
 void main() {
   runApp(MyApp());
@@ -110,7 +111,10 @@ class _MainPage extends State<MainPage> with SingleTickerProviderStateMixin {
                 });
               });
             },
-            child: Text('날짜바꾸기'),
+            child: Text(DateFormat.yMMMEd().format(_selectedDate),
+                style: TextStyle(
+                  color: Colors.white,
+                )),
           )
         ],
       ),
