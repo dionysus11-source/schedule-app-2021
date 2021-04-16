@@ -66,7 +66,6 @@ class _DailyAddAppState extends State<DailyAddApp> {
                                 width: 20,
                               ),
                               SizedBox(
-                                width: 100,
                                 child: Text(plan.title),
                               ),
                             ],
