@@ -49,6 +49,7 @@ flutter:
     - repo/images/calendar.png
     - repo/images/week.png
     - repo/images/feedback.png
+    - repo/images/daily.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
