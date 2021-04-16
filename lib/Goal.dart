@@ -55,7 +55,7 @@ class Goal {
     return 52;
   }
 
-  static int ordinalDay(date) {
+  static int getOrdinalDay(date) {
     const List ordinal_table = [
       0,
       31,
@@ -78,13 +78,13 @@ class Goal {
   }
 
   static int getweekNumber(DateTime date) {
-    var ordinal_day = ordinalDay(date);
-    var current_year = date.year.toDouble();
+    var ordinalDay = getOrdinalDay(date);
+    var currentYear = date.year.toDouble();
     var weekday = date.weekday;
-    var week = ((ordinal_day - weekday + 10) / 7).floor();
+    var week = ((ordinalDay - weekday + 10) / 7).floor();
 
-    if (week < 1) return lastWeek(current_year - 1);
-    if (week > lastWeek(current_year)) return 1;
+    if (week < 1) return lastWeek(currentYear - 1);
+    if (week > lastWeek(currentYear)) return 1;
     return week;
   }
 }

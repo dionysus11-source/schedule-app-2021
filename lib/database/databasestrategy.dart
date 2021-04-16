@@ -7,7 +7,9 @@ abstract class DatabaseStrategy {
   DatabaseStrategy();
 
   Future<Database> get database async {
-    return null;
+    if (_database != null) return _database;
+    _database = await initDatabase();
+    return _database;
   }
 
   Future<Database> initDatabase() async {

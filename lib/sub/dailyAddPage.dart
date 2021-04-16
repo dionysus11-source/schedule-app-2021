@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import '../plan.dart';
-import '../Goal.dart';
 
 class DailyAddApp extends StatefulWidget {
   final Future<Database> db;

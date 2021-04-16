@@ -6,7 +6,6 @@ import 'sub/weeklyFeedbackPage.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'addPlanner.dart';
-import 'plan.dart';
 import 'package:intl/intl.dart';
 
 void main() {

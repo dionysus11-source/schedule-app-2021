@@ -27,7 +27,7 @@ class PlanDbHelper implements DatabaseStrategy {
   Future<List<Plan>> getData(var time) async {
     String date = Plan.makeDate(time.year, time.month, time.day);
     List<Map<String, dynamic>> maps = await _database.rawQuery(
-        'select title, date, time,category, id from todos where date=${date}');
+        'select title, date, time,category, id from todos where date=$date');
     List<Map<String, dynamic>> ret = new List();
 
     for (int i = 0; i < 24; ++i) {

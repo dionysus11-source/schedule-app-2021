@@ -33,7 +33,7 @@ class DailyFeedbackStrategy implements DatabaseStrategy {
     int selectedYear = time.year;
     final db = await this.database;
     List<Map<String, dynamic>> maps = await db.rawQuery(
-        'select review, date, todo, diary, week, weekday, id from $tableName where week=${week}');
+        'select review, date, todo, diary, week, weekday, id from $tableName where week=$week');
     maps.removeWhere((element) {
       int year = int.parse(element['date'].substring(0, 4));
       return selectedYear != year;
