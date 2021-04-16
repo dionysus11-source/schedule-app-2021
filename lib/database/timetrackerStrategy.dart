@@ -1,7 +1,6 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import '../timeTracker.dart';
-import '../plan.dart';
 import '../Goal.dart';
 import 'databasestrategy.dart';
 
@@ -32,23 +31,26 @@ class TimeTrackerStrategy implements DatabaseStrategy {
     final db = await this.database;
     List<Map<String, dynamic>> maps = await db.rawQuery(
         'select type, goalTime, spentTime, reason, improvement, week, year, id from $tableName where week=$week and year=$year');
-    if (maps.length > 0) {
-      List ret = List.generate(maps.length, (i) {
-        return TimeTracker(
-          type: maps[i]['type'],
-          goalTime: maps[i]['goalTime'],
-          spentTime: maps[i]['spentTime'],
-          reason: maps[i]['reason'],
-          improvement: maps[i]['improvement'],
-          week: maps[i]['week'],
-          year: maps[i]['year'],
-          id: maps[i]['id'],
-        );
-      });
-      ret.sort((a, b) => a.type.compareTo(b.type));
-      return ret;
-    } else
-      return null;
+    List<TimeTracker> ret = List.generate(6, (i) {
+      return TimeTracker(
+        type: i,
+        goalTime: 7,
+        spentTime: 0,
+        reason: '없음',
+        improvement: '없음',
+        week: week,
+        year: year,
+      );
+    });
+    for (int i = 0; i < maps.length; ++i) {
+      int type = maps[i]['type'];
+      ret[type].goalTime = maps[i]['goalTime'];
+      ret[type].spentTime = maps[i]['spentTime'];
+      ret[type].reason = maps[i]['reason'];
+      ret[type].improvement = maps[i]['improvement'];
+      ret[type].id = maps[i]['id'];
+    }
+    return ret;
   }
 
   void deleteData(var plan) async {

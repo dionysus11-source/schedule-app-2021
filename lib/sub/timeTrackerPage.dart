@@ -14,10 +14,10 @@ class _TimeTrackerAppState extends State<TimeTrackerApp> {
   Future<List<dynamic>> timeTrackerList;
   TimeTracker weeklyFeedback = new TimeTracker();
   DbHelper dbHelper;
-  TextEditingController goalContentController;
-  TextEditingController resultContentController;
-  TextEditingController reasonContentController;
-  TextEditingController todoContentController;
+  TextEditingController goaltimeEditingController;
+  TextEditingController spenttimeEditingController;
+  TextEditingController reasonEditingController;
+  TextEditingController improvementEditingController;
   static const List<String> typeToString = [
     '영적',
     '지적',
@@ -54,63 +54,171 @@ class _TimeTrackerAppState extends State<TimeTrackerApp> {
                   return ListView.builder(
                     itemBuilder: (context, index) {
                       TimeTracker plan = snapshot.data[index];
-                      return ListTile(
-                        title: Container(
-                          child: Row(
-                            children: <Widget>[
-                              SizedBox(
-                                width: 18,
-                                child: Text(typeToString[plan.type]),
-                              ),
-                              SizedBox(
-                                width: 18,
-                                child: Text(plan.goalTime.toString()),
-                              ),
-                              SizedBox(
-                                width: 15,
-                              ),
-                              SizedBox(
-                                width: 50,
-                                child: Text(plan.spentTime.toString()),
-                              ),
-                              SizedBox(
-                                width: 20,
-                              ),
-                              SizedBox(
-                                width: 100,
-                                child: Text(plan.improvement),
-                              ),
-                            ],
-                          ),
-                        ),
-                        onTap: () async {
-                          TimeTracker result = await showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: Text('수정'),
-                                  content: Text('삭제 하시겠습니까?'),
-                                  actions: <Widget>[
-                                    FlatButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop(plan);
-                                      },
-                                      child: Text('예'),
+                      print(plan.percentage);
+                      return Card(
+                          elevation: 5,
+                          margin: EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 20),
+                          child: ListTile(
+                            leading: CircleAvatar(
+                                radius: 25,
+                                child: FittedBox(
+                                    child: Text(typeToString[plan.type]))),
+                            title: Container(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  SizedBox(
+                                    child: Text(
+                                      '목표 : ' + plan.goalTime.toString(),
+                                      style: TextStyle(color: Colors.blue),
                                     ),
-                                    FlatButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: Text('아니오'),
-                                    )
-                                  ],
-                                );
-                              });
-                          if (result != null) {
-                            dbHelper.deleteData(result);
-                          }
-                        },
-                      );
+                                  ),
+                                  SizedBox(
+                                    child: Text(
+                                      '사용시간 : ' + plan.spentTime.toString(),
+                                      style: TextStyle(color: Colors.blue),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    child: Text(
+                                      '달성율 : ' +
+                                          plan.percentage.toString() +
+                                          '%',
+                                      style: TextStyle(color: Colors.blue),
+                                    ),
+                                  ),
+                                  Divider(
+                                    color: Colors.black,
+                                    thickness: 0.2,
+                                  ),
+                                  SizedBox(
+                                    child: Text(
+                                      '원인 분석',
+                                      style: TextStyle(color: Colors.blue),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    child: Text(plan.reason),
+                                  ),
+                                  Divider(
+                                    color: Colors.black,
+                                    thickness: 0.2,
+                                  ),
+                                  SizedBox(
+                                    child: Text(
+                                      '다음주 할 일',
+                                      style: TextStyle(color: Colors.blue),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    child: Text(plan.improvement),
+                                  ),
+                                  Divider(
+                                    color: Colors.black,
+                                    thickness: 0.2,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            onTap: () async {
+                              goaltimeEditingController =
+                                  TextEditingController();
+                              spenttimeEditingController =
+                                  TextEditingController();
+                              reasonEditingController = TextEditingController();
+                              improvementEditingController =
+                                  TextEditingController();
+                              TimeTracker result = await showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text('수정'),
+                                      content: Column(
+                                        children: [
+                                          Text('목표시간 :' +
+                                              plan.goalTime.toString()),
+                                          TextField(
+                                            controller:
+                                                goaltimeEditingController,
+                                            keyboardType: TextInputType.number,
+                                          ),
+                                          Text('사용시간:' +
+                                              plan.spentTime.toString()),
+                                          TextField(
+                                            controller:
+                                                spenttimeEditingController,
+                                            keyboardType: TextInputType.number,
+                                          ),
+                                          Text('원인 분석:' + plan.reason),
+                                          TextField(
+                                            controller: reasonEditingController,
+                                            keyboardType: TextInputType.text,
+                                          ),
+                                          Text(
+                                              '다음주에 적용할 것:' + plan.improvement),
+                                          TextField(
+                                            controller:
+                                                improvementEditingController,
+                                            keyboardType: TextInputType.text,
+                                          ),
+                                        ],
+                                      ),
+                                      actions: <Widget>[
+                                        FlatButton(
+                                          onPressed: () {
+                                            if (goaltimeEditingController
+                                                    .value.text !=
+                                                '') {
+                                              plan.goalTime = int.parse(
+                                                  goaltimeEditingController
+                                                      .value.text);
+                                            }
+                                            if (spenttimeEditingController
+                                                    .value.text !=
+                                                '') {
+                                              plan.spentTime = int.parse(
+                                                  spenttimeEditingController
+                                                      .value.text);
+                                            }
+                                            if (reasonEditingController
+                                                    .value.text !=
+                                                '') {
+                                              plan.reason =
+                                                  reasonEditingController
+                                                      .value.text;
+                                            }
+                                            if (improvementEditingController
+                                                    .value.text !=
+                                                '') {
+                                              plan.improvement =
+                                                  improvementEditingController
+                                                      .value.text;
+                                            }
+                                            Navigator.of(context).pop(plan);
+                                          },
+                                          child: Text('예'),
+                                        ),
+                                        FlatButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text('아니오'),
+                                        )
+                                      ],
+                                    );
+                                  });
+                              if (result != null) {
+                                dbHelper.updateOneData(result);
+                                await Future.delayed(
+                                    const Duration(seconds: 1));
+                                setState(() {
+                                  timeTrackerList =
+                                      dbHelper.getData(widget._selectedDate);
+                                });
+                              }
+                            },
+                          ));
                     },
                     itemCount: snapshot.data.length,
                   );

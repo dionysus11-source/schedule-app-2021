@@ -19,7 +19,7 @@ class TimeTracker {
       this.week,
       this.year});
   get percentage {
-    _percentage = (spentTime / goalTime);
+    _percentage = (spentTime / goalTime) * 100;
     return _percentage.toInt();
   }
 
