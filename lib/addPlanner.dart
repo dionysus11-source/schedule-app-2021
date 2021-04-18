@@ -147,8 +147,8 @@ class _AddPlanner extends State<AddPlanner> {
             Text('끝나는 시간 ' + _endTime.toString() + '시'),
             Slider(
               value: _endTime.toDouble(),
-              min: 0,
-              max: 23,
+              min: 1,
+              max: 24,
               divisions: 24,
               label: _endTime.toString(),
               onChanged: (value) {

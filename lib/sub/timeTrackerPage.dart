@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../database/dbHelper.dart';
 import '../timeTracker.dart';
 import 'package:schedule_app_2021/database/timetrackerStrategy.dart';
+import '../database/PlanStrategy.dart';
 
 class TimeTrackerApp extends StatefulWidget {
   final DateTime _selectedDate;
@@ -12,6 +13,7 @@ class TimeTrackerApp extends StatefulWidget {
 
 class _TimeTrackerAppState extends State<TimeTrackerApp> {
   Future<List<dynamic>> timeTrackerList;
+  Future<List> spentTime;
   TimeTracker weeklyFeedback = new TimeTracker();
   DbHelper dbHelper;
   TextEditingController goaltimeEditingController;
@@ -27,6 +29,31 @@ class _TimeTrackerAppState extends State<TimeTrackerApp> {
     '기타',
     '버리는 시간'
   ];
+  static const Map<String, int> stringtoType = {
+    '영적': 0,
+    '지적': 1,
+    '사회적': 2,
+    '신체적': 3,
+    '잠': 4,
+    '기타': 5,
+    '버리는 시간': 6
+  };
+
+  Future<List> getTime(var time) async {
+    List ret = List.filled(stringtoType.length, 0);
+    DbHelper dbHelper = new DbHelper();
+    dbHelper.setDatabaseStrategy(new PlanStrategy());
+    DateTime mondayDate = time.subtract(Duration(days: time.weekday - 1));
+    for (int i = 0; i < 7; ++i) {
+      DateTime today = mondayDate.add(Duration(days: i));
+      List<dynamic> planList = await dbHelper.getData(today);
+      for (int j = 0; j < planList.length; ++j) {
+        int type = stringtoType[planList[i].category];
+        ++ret[type];
+      }
+    }
+    return ret;
+  }
 
   @override
   void initState() {
@@ -34,6 +61,7 @@ class _TimeTrackerAppState extends State<TimeTrackerApp> {
     this.dbHelper = new DbHelper();
     dbHelper.setDatabaseStrategy(new TimeTrackerStrategy());
     timeTrackerList = dbHelper.getData(widget._selectedDate);
+    spentTime = getTime(widget._selectedDate);
   }
 
   @override

@@ -3,11 +3,11 @@ import 'package:path/path.dart';
 import '../plan.dart';
 import 'databasestrategy.dart';
 
-class PlanDbHelper implements DatabaseStrategy {
+class PlanStrategy implements DatabaseStrategy {
   static Database _database;
   final String tableName = 'todos';
 
-  PlanDbHelper();
+  PlanStrategy();
 
   Future<Database> get database async {
     if (_database != null) return _database;
@@ -19,14 +19,15 @@ class PlanDbHelper implements DatabaseStrategy {
     return openDatabase(join(await getDatabasesPath(), 'planer_database.db'),
         onCreate: (db, version) {
       return db.execute(
-          "CREATE TABLE daily(id INTEGER PRIMARY KEY AUTOINCREMENT, "
+          "CREATE TABLE todos(id INTEGER PRIMARY KEY AUTOINCREMENT, "
           "title TEXT, category TEXT, date TEXT, time INTEGER, week INTEGER, weeday INTEGER)");
     }, version: 1);
   }
 
   Future<List<Plan>> getData(var time) async {
     String date = Plan.makeDate(time.year, time.month, time.day);
-    List<Map<String, dynamic>> maps = await _database.rawQuery(
+    final db = await this.database;
+    List<Map<String, dynamic>> maps = await db.rawQuery(
         'select title, date, time,category, id from todos where date=$date');
     List<Map<String, dynamic>> ret = new List();
 
