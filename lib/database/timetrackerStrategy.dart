@@ -71,7 +71,8 @@ class TimeTrackerStrategy implements DatabaseStrategy {
   void updateOneData(var plan) async {
     if (plan == null) return;
     await _database.delete(tableName,
-        where: 'week=? AND year=?', whereArgs: [plan.week, plan.year]);
+        where: 'week=? AND year=? AND type=?',
+        whereArgs: [plan.week, plan.year, plan.type]);
     await _database.insert(tableName, plan.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace);
   }

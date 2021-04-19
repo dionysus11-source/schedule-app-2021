@@ -188,6 +188,12 @@ class _TimeTrackerAppState extends State<TimeTrackerApp> {
                                       actions: <Widget>[
                                         FlatButton(
                                           onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text('아니오'),
+                                        ),
+                                        FlatButton(
+                                          onPressed: () {
                                             if (goaltimeEditingController
                                                     .value.text !=
                                                 '') {
@@ -213,12 +219,6 @@ class _TimeTrackerAppState extends State<TimeTrackerApp> {
                                           },
                                           child: Text('예'),
                                         ),
-                                        FlatButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: Text('아니오'),
-                                        )
                                       ],
                                     );
                                   });

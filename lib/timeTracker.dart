@@ -1,7 +1,6 @@
 class TimeTracker {
   int type;
   int goalTime;
-  int spentTime;
   String reason;
   String improvement;
   int week;
