@@ -92,45 +92,6 @@ class _AddPlanner extends State<AddPlanner> {
             SizedBox(
               height: 20,
             ),
-            Text(_year.toString() + '년'),
-            Slider(
-              value: _year.toDouble(),
-              min: 2021,
-              max: 2025,
-              divisions: 5,
-              label: _year.toString(),
-              onChanged: (value) {
-                setState(() {
-                  _year = value.toInt();
-                });
-              },
-            ),
-            Text(_month.toString() + '월'),
-            Slider(
-              value: _month.toDouble(),
-              min: 1,
-              max: 12,
-              divisions: 12,
-              label: _month.toString(),
-              onChanged: (value) {
-                setState(() {
-                  _month = value.toInt();
-                });
-              },
-            ),
-            Text(_day.toString() + '일'),
-            Slider(
-              value: _day.toDouble(),
-              min: 1,
-              max: 31,
-              divisions: 31,
-              label: _day.toString(),
-              onChanged: (value) {
-                setState(() {
-                  _day = value.toInt();
-                });
-              },
-            ),
             Text('시작 시간 ' + _startTime.toString() + '시'),
             Slider(
               value: _startTime.toDouble(),

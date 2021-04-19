@@ -21,7 +21,7 @@ class TimeTrackerStrategy implements DatabaseStrategy {
         onCreate: (db, version) {
       return db.execute(
           "CREATE TABLE $tableName(id INTEGER PRIMARY KEY AUTOINCREMENT, "
-          "type INTEGER, goalTime INTEGER, spentTime INTEGER, reason TEXT, improvement TEXT, week INNTEGER, year INTEGER)");
+          "type INTEGER, goalTime INTEGER,  reason TEXT, improvement TEXT, week INNTEGER, year INTEGER)");
     }, version: 1);
   }
 
@@ -30,12 +30,11 @@ class TimeTrackerStrategy implements DatabaseStrategy {
     int year = time.year;
     final db = await this.database;
     List<Map<String, dynamic>> maps = await db.rawQuery(
-        'select type, goalTime, spentTime, reason, improvement, week, year, id from $tableName where week=$week and year=$year');
+        'select type, goalTime, reason, improvement, week, year, id from $tableName where week=$week and year=$year');
     List<TimeTracker> ret = List.generate(6, (i) {
       return TimeTracker(
         type: i,
         goalTime: 7,
-        spentTime: 0,
         reason: '없음',
         improvement: '없음',
         week: week,
@@ -45,7 +44,6 @@ class TimeTrackerStrategy implements DatabaseStrategy {
     for (int i = 0; i < maps.length; ++i) {
       int type = maps[i]['type'];
       ret[type].goalTime = maps[i]['goalTime'];
-      ret[type].spentTime = maps[i]['spentTime'];
       ret[type].reason = maps[i]['reason'];
       ret[type].improvement = maps[i]['improvement'];
       ret[type].id = maps[i]['id'];

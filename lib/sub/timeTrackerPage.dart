@@ -16,8 +16,8 @@ class _TimeTrackerAppState extends State<TimeTrackerApp> {
   Future<List> spentTime;
   TimeTracker weeklyFeedback = new TimeTracker();
   DbHelper dbHelper;
+  List sTime;
   TextEditingController goaltimeEditingController;
-  TextEditingController spenttimeEditingController;
   TextEditingController reasonEditingController;
   TextEditingController improvementEditingController;
   static const List<String> typeToString = [
@@ -27,7 +27,7 @@ class _TimeTrackerAppState extends State<TimeTrackerApp> {
     '신체적',
     '잠',
     '기타',
-    '버리는 시간'
+    '버림'
   ];
   static const Map<String, int> stringtoType = {
     '영적': 0,
@@ -36,7 +36,7 @@ class _TimeTrackerAppState extends State<TimeTrackerApp> {
     '신체적': 3,
     '잠': 4,
     '기타': 5,
-    '버리는 시간': 6
+    '버림': 6
   };
 
   Future<List> getTime(var time) async {
@@ -48,7 +48,7 @@ class _TimeTrackerAppState extends State<TimeTrackerApp> {
       DateTime today = mondayDate.add(Duration(days: i));
       List<dynamic> planList = await dbHelper.getData(today);
       for (int j = 0; j < planList.length; ++j) {
-        int type = stringtoType[planList[i].category];
+        int type = stringtoType[planList[j].category];
         ++ret[type];
       }
     }
@@ -60,8 +60,8 @@ class _TimeTrackerAppState extends State<TimeTrackerApp> {
     super.initState();
     this.dbHelper = new DbHelper();
     dbHelper.setDatabaseStrategy(new TimeTrackerStrategy());
+    sTime = List.filled(stringtoType.length, 0);
     timeTrackerList = dbHelper.getData(widget._selectedDate);
-    spentTime = getTime(widget._selectedDate);
   }
 
   @override
@@ -82,7 +82,6 @@ class _TimeTrackerAppState extends State<TimeTrackerApp> {
                   return ListView.builder(
                     itemBuilder: (context, index) {
                       TimeTracker plan = snapshot.data[index];
-                      print(plan.percentage);
                       return Card(
                           elevation: 5,
                           margin: EdgeInsets.symmetric(
@@ -104,14 +103,17 @@ class _TimeTrackerAppState extends State<TimeTrackerApp> {
                                   ),
                                   SizedBox(
                                     child: Text(
-                                      '사용시간 : ' + plan.spentTime.toString(),
+                                      '사용시간 : ' + sTime[index].toString(),
+                                      //plan.spentTime.toString(),
                                       style: TextStyle(color: Colors.blue),
                                     ),
                                   ),
                                   SizedBox(
                                     child: Text(
                                       '달성율 : ' +
-                                          plan.percentage.toString() +
+                                          (((sTime[index] / plan.goalTime) *
+                                                  100))
+                                              .toStringAsFixed(0) +
                                           '%',
                                       style: TextStyle(color: Colors.blue),
                                     ),
@@ -152,8 +154,6 @@ class _TimeTrackerAppState extends State<TimeTrackerApp> {
                             onTap: () async {
                               goaltimeEditingController =
                                   TextEditingController();
-                              spenttimeEditingController =
-                                  TextEditingController();
                               reasonEditingController = TextEditingController();
                               improvementEditingController =
                                   TextEditingController();
@@ -169,13 +169,6 @@ class _TimeTrackerAppState extends State<TimeTrackerApp> {
                                           TextField(
                                             controller:
                                                 goaltimeEditingController,
-                                            keyboardType: TextInputType.number,
-                                          ),
-                                          Text('사용시간:' +
-                                              plan.spentTime.toString()),
-                                          TextField(
-                                            controller:
-                                                spenttimeEditingController,
                                             keyboardType: TextInputType.number,
                                           ),
                                           Text('원인 분석:' + plan.reason),
@@ -200,13 +193,6 @@ class _TimeTrackerAppState extends State<TimeTrackerApp> {
                                                 '') {
                                               plan.goalTime = int.parse(
                                                   goaltimeEditingController
-                                                      .value.text);
-                                            }
-                                            if (spenttimeEditingController
-                                                    .value.text !=
-                                                '') {
-                                              plan.spentTime = int.parse(
-                                                  spenttimeEditingController
                                                       .value.text);
                                             }
                                             if (reasonEditingController
@@ -258,6 +244,17 @@ class _TimeTrackerAppState extends State<TimeTrackerApp> {
           },
           future: timeTrackerList,
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          spentTime = getTime(widget._selectedDate);
+          spentTime.then((value) {
+            setState(() {
+              sTime = value;
+            });
+          });
+        },
+        child: Icon(Icons.refresh),
       ),
     );
   }
