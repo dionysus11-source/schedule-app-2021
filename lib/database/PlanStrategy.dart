@@ -32,7 +32,7 @@ class PlanStrategy implements DatabaseStrategy {
     List<Map<String, dynamic>> ret = new List();
 
     for (int i = 0; i < 24; ++i) {
-      ret.add({'title': '없음', 'date': date, 'time': i, 'category': '영적'});
+      ret.add({'title': '없음', 'date': date, 'time': i, 'category': '기타'});
     }
     for (int i = 0; i < maps.length; ++i) {
       ret[maps[i]['time']] = maps[i];

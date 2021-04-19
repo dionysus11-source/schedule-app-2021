@@ -24,7 +24,8 @@ class _DailyAddAppState extends State<DailyAddApp> {
       '사회적': Colors.brown.withOpacity(0.7),
       '신체적': Colors.yellow.withOpacity(0.7),
       '잠': Colors.blue.withOpacity(0.7),
-      '버림': Colors.orange.withOpacity(0.7)
+      '버림': Colors.orange.withOpacity(0.7),
+      '기타': Colors.white.withOpacity(0.7)
     };
   }
 
@@ -128,7 +129,7 @@ class _DailyAddAppState extends State<DailyAddApp> {
     List<Map<String, dynamic>> ret = new List();
 
     for (int i = 0; i < 24; ++i) {
-      ret.add({'title': '없음', 'date': date, 'time': i, 'category': '영적'});
+      ret.add({'title': '없음', 'date': date, 'time': i, 'category': '기타'});
     }
     for (int i = 0; i < maps.length; ++i) {
       ret[maps[i]['time']] = maps[i];
