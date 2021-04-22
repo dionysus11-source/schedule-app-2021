@@ -1,7 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import '../class/Goal.dart';
 import '../class/weeklyFeedback.dart';
+import '../class/weekCalculator.dart';
 import 'databasestrategy.dart';
 
 class WeeklyFeedbackStrategy implements DatabaseStrategy {
@@ -26,7 +26,7 @@ class WeeklyFeedbackStrategy implements DatabaseStrategy {
   }
 
   Future<List<WeeklyFeedback>> getData(var time) async {
-    int week = Goal.getweekNumber(time);
+    int week = WeekCalculator.getweekNumber(time);
     int year = time.year;
     final db = await this.database;
     List<Map<String, dynamic>> maps = await db.rawQuery(

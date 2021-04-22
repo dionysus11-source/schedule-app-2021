@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:schedule_app_2021/database/weeklyFeedbackStrategy.dart';
 import '../database/dbHelper.dart';
 import '../class/weeklyFeedback.dart';
+import '../class/weekCalculator.dart';
 import '../class/Goal.dart';
 
 class WeeklyFeedbackApp extends StatefulWidget {
@@ -162,7 +163,7 @@ class _WeeklyFeedbackAppState extends State<WeeklyFeedbackApp> {
               });
           if (result != null) {
             if (result.week == null || result.year == null) {
-              result.week = Goal.getweekNumber(widget._selectedDate);
+              result.week = WeekCalculator.getweekNumber(widget._selectedDate);
               result.year = widget._selectedDate.year;
             }
             dbHelper.updateOneData(result);

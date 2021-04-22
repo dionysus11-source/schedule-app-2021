@@ -1,8 +1,9 @@
+import 'package:schedule_app_2021/class/weekCalculator.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import '../class/dailyFeedback.dart';
 import '../class/plan.dart';
-import '../class/Goal.dart';
+import '../class/weekCalculator.dart';
 import 'databasestrategy.dart';
 
 class DailyFeedbackStrategy implements DatabaseStrategy {
@@ -29,7 +30,7 @@ class DailyFeedbackStrategy implements DatabaseStrategy {
   Future<List<DailyFeedback>> getData(var time) async {
     int weekday = time.weekday - 1;
     DateTime mondayDate = time.subtract(Duration(days: weekday));
-    int week = Goal.getweekNumber(time);
+    int week = WeekCalculator.getweekNumber(time);
     int selectedYear = time.year;
     final db = await this.database;
     List<Map<String, dynamic>> maps = await db.rawQuery(
