@@ -19,7 +19,7 @@ class _DailyFeedbackAppState extends State<DailyFeedbackApp> {
   TextEditingController reviewContentController;
   TextEditingController todoContentController;
   TextEditingController diaryContentController;
-  Map<int, String> weekString = {
+  static const Map<int, String> weekString = {
     1: 'MON',
     2: 'TUE',
     3: "WED",
