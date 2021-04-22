@@ -1,7 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import '../Goal.dart';
-import '../weeklyFeedback.dart';
+import '../class/Goal.dart';
+import '../class/weeklyFeedback.dart';
 import 'databasestrategy.dart';
 
 class WeeklyFeedbackStrategy implements DatabaseStrategy {

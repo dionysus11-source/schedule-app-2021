@@ -1,7 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import '../timeTracker.dart';
-import '../Goal.dart';
+import '../class/timeTracker.dart';
+import '../class/Goal.dart';
 import 'databasestrategy.dart';
 
 class TimeTrackerStrategy implements DatabaseStrategy {

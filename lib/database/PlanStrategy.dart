@@ -1,6 +1,6 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import '../plan.dart';
+import '../class/plan.dart';
 import 'databasestrategy.dart';
 
 class PlanStrategy implements DatabaseStrategy {

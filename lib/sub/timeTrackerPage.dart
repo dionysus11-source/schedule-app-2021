@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../database/dbHelper.dart';
-import '../timeTracker.dart';
+import '../class/timeTracker.dart';
 import 'package:schedule_app_2021/database/timetrackerStrategy.dart';
 import '../database/PlanStrategy.dart';
 

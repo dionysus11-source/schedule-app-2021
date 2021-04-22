@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqlite_api.dart';
-import 'plan.dart';
+import 'class/plan.dart';
 
 class AddPlanner extends StatefulWidget {
   final Future<Database> db;

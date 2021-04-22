@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:schedule_app_2021/database/weeklyFeedbackStrategy.dart';
 import '../database/dbHelper.dart';
-import '../weeklyFeedback.dart';
-import '../Goal.dart';
+import '../class/weeklyFeedback.dart';
+import '../class/Goal.dart';
 
 class WeeklyFeedbackApp extends StatefulWidget {
   final DateTime _selectedDate;

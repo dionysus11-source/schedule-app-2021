@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
-import '../dailyFeedback.dart';
+import '../class/dailyFeedback.dart';
 import '../database/DailyFeedbackStrategy.dart';
 import '../database/dbHelper.dart';
 
